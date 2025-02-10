@@ -1,0 +1,9 @@
+Average time taken after 1 processes and 10 testsize - 2.451083 seconds
+Average time taken after 2 processes and 10 testsize - 1.258032 seconds
+Average time taken after 3 processes and 10 testsize - 0.991551 seconds
+Average time taken after 4 processes and 10 testsize - 0.844527 seconds
+Average time taken after 5 processes and 10 testsize - 0.759849 seconds
+Average time taken after 6 processes and 10 testsize - 0.769253 seconds
+Average time taken after 7 processes and 10 testsize - 0.930311 seconds
+Average time taken after 8 processes and 10 testsize - 0.915712 seconds
+Average time taken after 9 processes and 10 testsize - 0.944721 seconds

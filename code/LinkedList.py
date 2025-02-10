@@ -54,9 +54,9 @@ class LinkedList:
         avg = self.sum / self.size
         return low * avg <= val <= high * avg
 
-new = LinkedList(1)
-new.append(19)
-new.append(12)
-new.eject()
-new.enforce()
-print(new)
+# new = LinkedList(1)
+# new.append(19)
+# new.append(12)
+# new.eject()
+# new.enforce()
+# print(new)

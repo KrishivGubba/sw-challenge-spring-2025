@@ -1,0 +1,9 @@
+Average time taken after 1 threads and 10 testsize - 2.606133 seconds
+Average time taken after 2 threads and 10 testsize - 2.589889 seconds
+Average time taken after 3 threads and 10 testsize - 3.039086 seconds
+Average time taken after 4 threads and 10 testsize - 4.781446 seconds
+Average time taken after 5 threads and 10 testsize - 5.331937 seconds
+Average time taken after 6 threads and 10 testsize - 5.965608 seconds
+Average time taken after 7 threads and 10 testsize - 5.929906 seconds
+Average time taken after 8 threads and 10 testsize - 5.953007 seconds
+Average time taken after 9 threads and 10 testsize - 6.171110 seconds
