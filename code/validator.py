@@ -2,6 +2,8 @@ import csv
 import os
 from datetime import datetime
 from LinkedList import LinkedList
+from multiprocessing import Pool
+# from testingClass import testingClass
 class Validator:
     def __init__(self):
         pass
@@ -129,6 +131,51 @@ class Validator:
             dateMiss.append(f"Error in processing: {e}")
         
         return dateMiss, nonInc
+    
+    @staticmethod
+    def getFileSize(filename):
+        with open(filename, "r") as file:
+            count = sum(1 for line in file) - 1
+        return count
+    
+    @staticmethod
+    def handlePrices(filename):
+        movingAv = LinkedList(max(Validator.getFileSize(filename)//10, 2)) #moving avg capacity should be 1/10th the file size
+        try:
+            with open(filename, "r", newline="") as f:
+                reader = csv.reader(f)
+                header = next(reader)
+                all_rows = []
+                for line in reader:
+                    try:
+                        priceStr = line[1]
+                        if not priceStr: #missing, populate with avg
+                            line[1] = movingAv.getAvg()
+                        else:
+                            priceFloat = float(priceStr)
+                            
+                            if movingAv.checkAgainst(priceFloat, 0.95, 1.05):
+                                movingAv.append(priceFloat)
+                                movingAv.enforce()
+                            else:
+                                #make manual checks and edits
+                                # if movingAv.checkAgainst(priceFloat*10, 0.95, 1.05):
+                                if priceFloat < 0:
+                                    line[1] = -priceFloat
+                                elif movingAv.checkAgainst(priceFloat*10, 0.95, 1.05):
+                                    line[1] = priceFloat *  10
+                        all_rows.append(line)
+                    except:
+                        pass #must not end iteration
+            with open(filename, "w", newline="") as output:
+                writer = csv.writer(output)
+                writer.writerow(header)
+                writer.writerows(all_rows)
+                    
+        except Exception as e:
+            print(f"{filename} - {e}") #TODO: log errors somewhere
+            return False
+        return True
         
     def thingalin(self, dirName):
         missing, wrong = [], []
@@ -154,13 +201,13 @@ class Validator:
                             else:
                                 wrong.append(f"{filename} {line}")
                 except Exception as e:
-                    print(e)
+                    print(f"{filename} - {e}")
         return missing, wrong
         
 
 
 # Example usage
-thing = Validator()
+# thing = Validator()
 # print(thing.checkHeaders("../data", ["Timestamp", "Price", "Size"]))
 # expected_headers = ["Timestamp", "Price", "Size"]
 # print(len(thing.checkDate("../data")[1]))
@@ -169,4 +216,23 @@ thing = Validator()
 # print(len(b))
 # thing.checkDate("../data")
 # print("heck exwc")
-thing.checkDateForFile(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0001_a016010f.csv")
+# thing.checkDateForFile(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0001_a016010f.csv")
+# thing.handlePrices(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0002_d03f59fc.csv")
+
+def multiprocess(function, *args):
+    with Pool(processes=6) as pool:
+        pool.map(function, args[0])
+
+
+if __name__ == "__main__":
+    #carry out cleaning
+
+    #1. deal with prices:
+    # allFiles = testingClass.getAllFiles()
+    allFiles = []
+    for filename in os.listdir("../data"):
+        file_path = os.path.join("../data", filename)
+        allFiles.append(file_path)
+    multiprocess(Validator.handlePrices, allFiles)
+    # Validator.handlePrices(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0588_8868b5a8.csv")
+

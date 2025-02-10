@@ -4,7 +4,7 @@ from validator import Validator
 import os
 from concurrent.futures import ThreadPoolExecutor
 
-class Testing:
+class testingClass:
 
     @staticmethod
     def getAllFiles():
@@ -86,6 +86,6 @@ class Testing:
         with open(filename, "w") as f:
             f.write(f"Average time taken - {avg_time:.6f} seconds\n")
 
-if __name__=="__main__":
-    allFiles = Testing.getAllFiles()
-    Testing.testThreads(Testing.checkDateFileWrapper, 10, 10, allFiles)
+# if __name__=="__main__":
+#     allFiles = testingClass.getAllFiles()
+#     testingClass.testMultiProcessing(testingClass.checkDateFileWrapper, 10, 10, allFiles)

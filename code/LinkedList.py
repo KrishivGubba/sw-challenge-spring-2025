@@ -34,6 +34,9 @@ class LinkedList:
         toAttach.after = self.end
         self.sum += val
         self.size += 1
+    
+    def getAvg(self):
+        return self.sum / self.size
 
     def eject(self):
         if self.size == 0:
