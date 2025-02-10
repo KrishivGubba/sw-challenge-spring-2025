@@ -87,20 +87,26 @@ class Validator:
     
     @staticmethod
     def checkDateForFile(file_path):
-        dateMiss = []  # List to store missing dates
-        nonInc = []  # List to store non-increasing timestamps
+        dateMiss = []
+        nonInc = []
         prev = None
+        valid_rows = []
+        
         try:
             with open(file_path, "r", newline="") as f:
                 reader = csv.reader(f)
-                next(reader)  # Skip column headers
+                rows = list(reader)
+                
+                if len(rows) > 0:
+                    header = rows[0]
+                    valid_rows.append(header)
 
-                for row in reader:
-                    timestamp_str = row[0]  # Assuming timestamp is in the first column (adjust if needed)
+                for row in rows[1:]:
+                    timestamp_str = row[0]
 
-                    if not timestamp_str:  # Check for missing date
+                    if not timestamp_str:
                         dateMiss.append("Missing date in file")
-                        break  # No need to continue if date is missing in this row
+                        break
 
                     try:
                         current_timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S.%f")
@@ -108,18 +114,20 @@ class Validator:
                         dateMiss.append("Invalid date format")
                         break
 
-                    # Compare with previous timestamp
-                    if prev and current_timestamp <= prev:
-                        nonInc.append("Non-increasing timestamp found")
-                        # print(f"Previous: {prev}, Current: {current_timestamp}")
-                        break  # Stop if timestamps are not increasing
+                    if prev and current_timestamp < prev:
+                        nonInc.append(f"Non-increasing timestamp found: {row}")
+                        continue
 
-                    prev = current_timestamp  # Update prev to current timestamp
+                    prev = current_timestamp
+                    valid_rows.append(row)
 
+            with open(file_path, "w", newline="") as f:
+                writer = csv.writer(f)
+                writer.writerows(valid_rows)
+            
         except Exception as e:
-            # print(f"Error processing file {file_path}: {e}")
-            dateMiss.append("Error in processing")
-
+            dateMiss.append(f"Error in processing: {e}")
+        
         return dateMiss, nonInc
         
     def thingalin(self, dirName):
@@ -161,3 +169,4 @@ thing = Validator()
 # print(len(b))
 # thing.checkDate("../data")
 # print("heck exwc")
+thing.checkDateForFile(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0001_a016010f.csv")

@@ -88,4 +88,4 @@ class Testing:
 
 if __name__=="__main__":
     allFiles = Testing.getAllFiles()
-    Testing.testThreads(Validator.checkDateForFile, 10, 10, allFiles)
+    Testing.testThreads(Testing.checkDateFileWrapper, 10, 10, allFiles)
