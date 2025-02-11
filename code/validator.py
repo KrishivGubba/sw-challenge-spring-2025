@@ -229,10 +229,10 @@ if __name__ == "__main__":
 
     #1. deal with prices:
     # allFiles = testingClass.getAllFiles()
-    allFiles = []
-    for filename in os.listdir("../data"):
-        file_path = os.path.join("../data", filename)
-        allFiles.append(file_path)
+    allFiles = ["./completed.csv"]
+    # for filename in os.listdir("../data"):
+    #     file_path = os.path.join("../data", filename)
+    #     allFiles.append(file_path)
     multiprocess(Validator.handlePrices, allFiles)
     # Validator.handlePrices(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0588_8868b5a8.csv")
 
