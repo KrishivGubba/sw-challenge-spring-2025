@@ -1,3 +1,10 @@
+"""
+LinkedList class to maintain moving average efficiently
+
+(removal and insertion in constant time)
+"""
+
+
 class Node:
     def __init__(self, val=0, before=None, after=None):
         self.val = val
@@ -56,10 +63,3 @@ class LinkedList:
             return True
         avg = self.sum / self.size
         return low * avg <= val <= high * avg
-
-# new = LinkedList(1)
-# new.append(19)
-# new.append(12)
-# new.eject()
-# new.enforce()
-# print(new)

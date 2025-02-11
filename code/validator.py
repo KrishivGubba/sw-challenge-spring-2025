@@ -227,4 +227,4 @@ if __name__ == "__main__":
     multiprocess(Validator.checkDateForFile, allFiles)
     #3. check that dates are strictly increasing!
     multiprocess(Validator.checkFileHeaders, allFiles, ["Timestamp", "Price", "Size"])
-
+    #cleaning and reading complete

@@ -86,6 +86,14 @@ class testingClass:
         with open(filename, "w") as f:
             f.write(f"Average time taken - {avg_time:.6f} seconds\n")
 
-# if __name__=="__main__":
-#     allFiles = testingClass.getAllFiles()
-#     testingClass.testMultiProcessing(testingClass.checkDateFileWrapper, 10, 10, allFiles)
+if __name__=="__main__":
+    allFiles = testingClass.getAllFiles()
+    #using multi-processing
+    testingClass.testMultiProcessing(testingClass.checkDateFileWrapper, 10, 10, allFiles)
+    #using multi-threading
+    testingClass.testThreads(Validator.checkDateForFile, 10, 10, allFiles)
+    #regular sequential parsing
+    testingClass.regTest(Validator.checkDateForFile, 10, allFiles)
+
+
+    #RESULTS TO THESE TESTS CAN BE FOUND WITHIN /testresults -> optimal combination has been found to be multiprocessing with 6 processes
