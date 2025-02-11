@@ -177,7 +177,10 @@ class Validator:
             return False
         return True
         
-    def thingalin(self, dirName):
+    """
+    Cleans the prices of each file within a directory, UNUSED method , see handlePrices
+    """    
+    def cleanDirectoryPrices(self, dirName):
         missing, wrong = [], []
         movingAv = LinkedList(100) #for longer
         for filename in os.listdir(dirName):
@@ -206,22 +209,11 @@ class Validator:
         
 
 
-# Example usage
-# thing = Validator()
-# print(thing.checkHeaders("../data", ["Timestamp", "Price", "Size"]))
-# expected_headers = ["Timestamp", "Price", "Size"]
-# print(len(thing.checkDate("../data")[1]))
-# a, b = thing.thingalin("../data")
-# print(len(a))
-# print(len(b))
-# thing.checkDate("../data")
-# print("heck exwc")
-# thing.checkDateForFile(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0001_a016010f.csv")
-# thing.handlePrices(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0002_d03f59fc.csv")
-
 def multiprocess(function, *args):
     with Pool(processes=6) as pool:
-        pool.map(function, args[0])
+        if len(args)==2:
+            pool.map(function, args[0], args[1])
+        else:pool.map(function, args[0])
 
 
 if __name__ == "__main__":
@@ -230,9 +222,9 @@ if __name__ == "__main__":
     #1. deal with prices:
     # allFiles = testingClass.getAllFiles()
     allFiles = ["./completed.csv"]
-    # for filename in os.listdir("../data"):
-    #     file_path = os.path.join("../data", filename)
-    #     allFiles.append(file_path)
     multiprocess(Validator.handlePrices, allFiles)
-    # Validator.handlePrices(r"C:\Users\krish\PycharmProjects\ctg\sw-challenge-spring-2025\data\ctg_tick_20240916_0588_8868b5a8.csv")
+    #2.checkheaders
+    multiprocess(Validator.checkDateForFile, allFiles)
+    #3. check that dates are strictly increasing!
+    multiprocess(Validator.checkFileHeaders, allFiles, ["Timestamp", "Price", "Size"])
 
